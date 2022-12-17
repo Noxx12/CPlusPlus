@@ -1,99 +1,100 @@
+#pragma once
 #include <iostream>
 #include <iomanip>
-#include "BankCal.h"
-using namespace std;
 
-//
-BankingCalc::BankingCalc() {}BankingCalc::BankingCalc(float t_initialInvest, float t_monthlyDep, float t_annInterest, float t_years) {
-	initialInvest = t_initialInvest;
-	monthlyDep = t_monthlyDep;
-	annInterest = t_annInterest;
-	years = t_years;
-}
-//accessors
-float BankingCalc::getInitInvest(){
-	return initialInvest;
-}
-float BankingCalc::getMonthlyDep(){
-	return monthlyDep;
-}
-float BankingCalc::getAnnualInterest(){
-	return annInterest;
-}
-float BankingCalc::getYears() {
-	return years;
-}
-float BankingCalc::getMonths() {
-	return months; 
-}
-float BankingCalc::getTotalAmt() { 
-	return totalAmt; 
-}
-float BankingCalc::getInterestAmt() { 
-	return interestAmt; 
-}
-float BankingCalc::getYearTotInterest() { 
-	return yearTotInterest;
-}
-//Function used to display input chart and allows for user input.
-void BankingCalc::dataInput() {
-	cout << "********************************" << endl;
-	cout << "********** Data Input **********" << endl;
-	cout << "Initial Investment Amount: $";
-	cin >> initialInvest;
-	if (initialInvest < 0) {
-		cout << "Initial investment amount cannot be less than $0" << endl;
-		cout << "Initial Investment Amount: $";
-		cin >> initialInvest;
-	};
-	cout << "Monthly Deposit: $";
-	cin >> monthlyDep;
-	if (monthlyDep < 0) {
-		cout << "Initial investment amount cannot be less than $0" << endl;
-		cout << "Monthly Deposit: $";        cin >> monthlyDep;
-	}; cout << "Annual Interest: %";
-	cin >> annInterest;
-	cout << "Number of years: ";
-	cin >> years;
-	months = years * 12;
-	system("PAUSE");
-	system("CLS");
-	totalAmt = initialInvest;
-}
-//prints static reports from information obtained in dataInput()
-void BankingCalc::printReport() {
-	cout << "       Balance and Interest Without Additional Monthly Deposits" << endl;
-	cout << "=================================================================" << endl;
-	cout << "     Year     Year End Balance     Year End Earned Interest" << endl;
-	cout << "-----------------------------------------------------------------" << endl;
-	for (int i = 0; i < years; i++) {
-		//Calculate yearly interest
-		interestAmt = (totalAmt) * ((annInterest / 100));
-		//Calculate total at year's end
-		totalAmt = totalAmt + interestAmt;
-		//Prints results at a 2 decimal point precision
-		cout << "     " << (i + 1) << "\t\t$" << fixed << setprecision(2) << totalAmt << "\t\t\t$" << interestAmt << "\n";
+using namespace std;
+// Bank class
+class Bank {
+public:
+	void printMenu() {
+		//Display menu 
+		cout << "**********************************" << endl;
+		cout << "*********** Data Input ***********" << endl;
+		cout << "Initial Investment Amount: " << endl;
+		cout << "Monthly Deposit: " << endl;
+		cout << "Annual Interest: " << endl;
+		cout << "Number of years: " << endl;
+
+		//Press any key to continue
+		system("PAUSE");
+
+		//Get user input
+		cout << "**********************************" << endl;
+		cout << "*********** Data Input ***********" << endl;
+		cout << "Initial Investment Amount: $" << endl;
+		cin >> iInv;
+		cout << "Monthly Deposit: $" << endl;
+		cin >> mDep;
+		cout << "Annual Interest: %" << endl;
+		cin >> aInt;
+		cout << "Number of years: " << endl;
+		cin >> yrs;
+		mnts = yrs * 12;
+
+		system("PAUSE");
+
 	}
-	totalAmt = initialInvest;
-	//Display year data with monthly deposits from account owner
-	cout << endl;
-	cout << "       Balance and Interest With Additional Monthly Deposits" << endl;
-	cout << "=================================================================" << endl;
-	cout << "     Year     Year End Balance     Year End Earned Interest" << endl;
-	cout << "-----------------------------------------------------------------" << endl;
-	for (int i = 0; i < years; i++) {
-		//Sets interest for the year at zero (for a new year)
-		yearTotInterest = 0;
-		for (int j = 0; j < 12; j++) {
-			//Calculate monthly interest
-			interestAmt = (totalAmt + monthlyDep) * ((annInterest / 100) / 12);
-			//Calculate interest at month's end
-			yearTotInterest = yearTotInterest + interestAmt;
-			//Calculate total for the month
-			totalAmt = totalAmt + monthlyDep + interestAmt;
+	void printMenu2() {
+		//Total amount of first investment
+		tAmnt = iInv;
+
+		//Year end data for no monthly deposits
+		cout << endl << "Balance and Interest Without Additional Monthly Deposits" << endl;
+		cout << "================================================================" << endl;
+		cout << "Year          Year End Balance          Year End Earned Interest" << endl;
+		cout << "----------------------------------------------------------------" << endl;
+
+		//Yearly interest and year total
+		for (int i = 0; i < yrs; i++) {
+			//Yearly interest amount
+			iAmnt = ((tAmnt) * (aInt / 100));
+
+			//Year end total
+			tAmnt = tAmnt + iAmnt;
+
+			//Show dollar amount with set precision to 2 decimal places
+			cout << (i + 1) << "\t\t$" << fixed << setprecision(2) << tAmnt << "\t\t\t$" << iAmnt << endl;
 		}
-		//Prints results at a 2 decimal point precision.
-		cout << (i + 1) << "\t\t$" << fixed << setprecision(2) << totalAmt << "\t\t\t$" << yearTotInterest << "\n";
+
+		//Monthly interest and monthly total
+		iAmnt = iInv;
+
+		//Year end deposits
+		cout << endl << "Balance and Interest With Additional Monthly Deposits" << endl;
+		cout << "================================================================" << endl;
+		cout << "Year          Year End Balance          Year End Earned Interest" << endl;
+		cout << "----------------------------------------------------------------" << endl;
+
+		}
+	void code() {
+		for (int i = 0; i < yrs; i++) {
+			//Set yearly interest to 0
+			ytAmnt = 0;
+
+			for (int j = 0; j < 12; j++) {
+				//Monthly interest amount
+				iAmnt = (((tAmnt + mDep) * (aInt / 100)) / 12);
+
+				//Month end interest
+				ytAmnt = ytAmnt + iAmnt;
+
+				//Month end total
+				tAmnt = tAmnt + mDep + iAmnt;
+			}
+
+			cout << (i + 1) << "\t\t$" << fixed << setprecision(2) << tAmnt << "\t\t\t$" << ytAmnt << endl;
+		}
+
 	}
-}
-#undef main
+		
+		//Variables
+		float iInv = 0.0;    //First investment
+		float mDep = 0.0;    //Monthly deposit
+		float aInt = 0.0;    //Annual interest
+		float mnts = 0.0;    //Months
+		float yrs = 0.0;     //Years
+		float tAmnt = 0.0;   //Total amount
+		float iAmnt = 0.0;   //Interest amount
+		float ytAmnt = 0.0;  //Yearly total amount
+	
+};
